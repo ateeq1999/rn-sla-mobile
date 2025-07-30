@@ -14,6 +14,9 @@ const Home = () => {
                         <Button onPress={() => router.push('/(authed)/profile')}>
                             <ButtonText>Profile Page</ButtonText>
                         </Button>
+                        <Button onPress={() => router.push('/(authed)/scan')}>
+                            <ButtonText>Scan Page</ButtonText>
+                        </Button>
                     </VStack>
                 </ScrollView>
             </TouchableWithoutFeedback>
