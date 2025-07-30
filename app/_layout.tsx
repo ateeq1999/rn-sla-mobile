@@ -1,57 +1,75 @@
-import '@/global.css';
-import { Link, Stack } from 'expo-router';
-import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Icon } from '@/components/ui/icon';
-import { ShoppingCart, User } from 'lucide-react-native';
-import { Pressable } from 'react-native';
-import { useCart } from '@/store/cartStore';
-import { Text } from '@/components/ui/text';
-import { useAuth } from '@/store/authStore';
-import CustomStripeProvider from '@/components/CustomStripeProvider';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import { useColorScheme } from "@/components/useColorScheme";
+import "../global.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Create a client
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from "expo-router";
+
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: "(tabs)",
+};
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
+
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  const cartItemsNum = useCart((state) => state.items.length);
-  const isLoggedIn = useAuth((s) => !!s.token);
+  const [loaded, error] = useFonts({
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    ...FontAwesome.font,
+  });
+
+  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  useEffect(() => {
+    if (error) throw error;
+  }, [error]);
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
+  return <RootLayoutNav />;
+}
+
+function RootLayoutNav() {
+  const colorScheme = useColorScheme();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CustomStripeProvider>
-        <GluestackUIProvider>
-          <Stack
-            screenOptions={{
-              headerRight: () =>
-                cartItemsNum > 0 && (
-                  <Link href={'/cart'} asChild>
-                    <Pressable className="flex-row gap-2">
-                      <Icon as={ShoppingCart} />
-                      <Text>{cartItemsNum}</Text>
-                    </Pressable>
-                  </Link>
-                ),
-            }}
-          >
-            <Stack.Screen
-              name="index"
-              options={{
-                title: 'Shop',
-                headerLeft: () =>
-                  !isLoggedIn && (
-                    <Link href={'/login'} asChild>
-                      <Pressable className="flex-row gap-2">
-                        <Icon as={User} />
-                      </Pressable>
-                    </Link>
-                  ),
-              }}
-            />
-            <Stack.Screen name="product/[id]" options={{ title: 'Product' }} />
+      <GluestackUIProvider mode={(colorScheme ?? "light") as "light" | "dark"}>
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="signin" />
+            <Stack.Screen name="signup" />
+            <Stack.Screen name="forgot-password" />
+            <Stack.Screen name="create-password" />
+            <Stack.Screen name="news-feed" />
+            <Stack.Screen name="dashboard" />
+            <Stack.Screen name="profile" />
           </Stack>
-        </GluestackUIProvider>
-      </CustomStripeProvider>
+        </ThemeProvider>
+      </GluestackUIProvider>
     </QueryClientProvider>
   );
 }

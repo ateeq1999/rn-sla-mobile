@@ -1,39 +1,45 @@
-import { ActivityIndicator, FlatList } from 'react-native';
-import ProductListItem from '../components/ProductListItem';
-import { useBreakpointValue } from '@/components/ui/utils/use-break-point-value';
-import { listProducts } from '@/api/products';
-import { useQuery } from '@tanstack/react-query';
-import { err } from 'react-native-svg/lib/typescript/xml';
-import { Text } from '@/components/ui/text';
+import React from "react";
+import { Button, ButtonText } from "@/components/ui/button";
+import { router } from "expo-router";
+import { SafeAreaView } from "@/components/ui/safe-area-view";
+import { VStack } from "@/components/ui/vstack";
 
-export default function HomeScreen() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['products'],
-    queryFn: listProducts,
-  });
+const index = () => {
+    return (
+        <SafeAreaView className="md:flex flex-col items-center justify-center md:w-full h-full">
+            <VStack className="p-2 md:max-w-[440px] w-full" space="xl">
+                {/* <Button
+                    onPress={() => {
+                        router.push("auth/splash-screen");
+                    }}
+                >
+                    <ButtonText>SplashScreen</ButtonText>
+                </Button> */}
+                <Button
+                    className="w-full"
+                    onPress={() => {
+                        router.push("(auth)/login");
+                    }}
+                >
+                    <ButtonText>Sign in</ButtonText>
+                </Button>
+                <Button
+                    onPress={() => {
+                        router.push("(auth)/register");
+                    }}
+                >
+                    <ButtonText>Sign up</ButtonText>
+                </Button>
+                <Button
+                    onPress={() => {
+                        router.push("/(authed)/home");
+                    }}
+                >
+                    <ButtonText>Home</ButtonText>
+                </Button>
+            </VStack>
+        </SafeAreaView>
+    );
+};
 
-  const numColumns = useBreakpointValue({
-    default: 2,
-    sm: 3,
-    xl: 4,
-  });
-
-  if (isLoading) {
-    return <ActivityIndicator />;
-  }
-
-  if (error) {
-    return <Text>Error fetching products</Text>;
-  }
-
-  return (
-    <FlatList
-      key={numColumns}
-      data={data.splice(0, 10)}
-      numColumns={numColumns}
-      contentContainerClassName="gap-2 max-w-[960px] mx-auto w-full"
-      columnWrapperClassName="gap-2"
-      renderItem={({ item }) => <ProductListItem product={item} />}
-    />
-  );
-}
+export default index;
