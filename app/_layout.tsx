@@ -5,13 +5,14 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Redirect, Slot } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useColorScheme } from "@/components/useColorScheme";
 import "../global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthenticationProvider } from "@/context/AuthContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -29,6 +30,8 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
@@ -49,27 +52,16 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient} >
       <GluestackUIProvider mode={(colorScheme ?? "light") as "light" | "dark"}>
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="signin" />
-            <Stack.Screen name="signup" />
-            <Stack.Screen name="forgot-password" />
-            <Stack.Screen name="create-password" />
-            <Stack.Screen name="news-feed" />
-            <Stack.Screen name="dashboard" />
-            <Stack.Screen name="profile" />
-          </Stack>
+          <AuthenticationProvider>
+            <Slot />
+          </AuthenticationProvider>
         </ThemeProvider>
       </GluestackUIProvider>
-    </QueryClientProvider>
+    </QueryClientProvider >
   );
 }
+

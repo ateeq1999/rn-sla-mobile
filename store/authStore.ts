@@ -1,17 +1,26 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '@/types/user';
+import { Partner } from '@/types/user';
 import { Token } from '@/types/shared';
 
-export const useAuthStore = create(
+interface State {
+  user: Partner | null
+  token: Token | null
+}
+
+interface Actions {
+  setUser: (user: State['user']) => void;
+  setToken: (token: State['token']) => void;
+}
+
+export const useAuthStore = create<State & Actions>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       token: null,
-
-      setUser: (user: User) => set({ user }),
-      setToken: (token: Token) => set({ token }),
+      setUser: (user) => set(() => ({ user: user })),
+      setToken: (token) => set(() => ({ token: token })),
     }),
     {
       name: 'auth-store',

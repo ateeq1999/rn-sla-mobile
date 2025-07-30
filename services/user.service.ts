@@ -1,18 +1,18 @@
-import {RegisterUserInput, LoginUserInput} from "@/types/user";
-import {RegisterApiResponse} from "@/types/shared";
+import { RegisterUserInput, LoginUserInput, Partner } from "@/types/user";
 import { Api } from "./api";
+import { ListApiResponse, SingleApiResponse } from "@/types/shared";
 
-async function login(data: LoginUserInput): Promise<RegisterApiResponse> {
-    return await Api.post("/auth/partners/login", data);
+async function index(data: LoginUserInput): Promise<ListApiResponse<Partner>> {
+    return await Api.get("/partners");
 }
 
-async function register(data: RegisterUserInput): Promise<RegisterApiResponse> {
-    return Api.post("/auth/partners/register", data);
+async function get(id: string): Promise<SingleApiResponse<Partner>> {
+    return await Api.get(`/partners/${id}`);
 }
 
 const userService = {
-    login,
-    register,
+    index,
+    get,
 };
 
 export { userService };

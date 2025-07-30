@@ -1,5 +1,3 @@
-import {User} from "@/types/user";
-
 export interface Token {
     type: string
     name: string | null
@@ -9,13 +7,45 @@ export interface Token {
     expiresAt: number | null
 }
 
-interface RegisterData {
-    token: Token
-    partner: User
+interface Meta {
+    total: number,
+    perPage: number,
+    currentPage: number,
+    lastPage: number,
+    firstPage: number,
+    firstPageUrl: string | null,
+    lastPageUrl: string | null,
+    nextPageUrl: string | null,
+    previousPageUrl: string | null,
 }
 
-export interface RegisterApiResponse {
+interface AuthData<T> {
+    token: Token
+    partner: T
+}
+
+interface ApiData<T> {
+    meta: Meta
+    data: Array<T>
+}
+
+export interface RegisterApiResponse<T> extends BaseApiResponse {
+    data: AuthData<T>;
+}
+
+export interface BaseApiResponse {
     message: string;
     code: number;
-    data: RegisterData;
+}
+
+export interface LoginApiResponse<T> extends BaseApiResponse {
+    data: AuthData<T>;
+}
+
+export interface ListApiResponse<T> extends BaseApiResponse {
+    data: ApiData<T>;
+}
+
+export interface SingleApiResponse<T> extends BaseApiResponse {
+    data: ApiData<T>;
 }
