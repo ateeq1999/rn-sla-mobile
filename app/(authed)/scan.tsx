@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Vibration } from 'react-native';
 
@@ -40,6 +41,8 @@ export default function ScanTicketScreen() {
             // const ownerId = parseInt(owner.split(":")[1]);
 
             // await ticketService.validateOne(ticketId, ownerId);
+
+            router.push('/(authed)/wheel')
 
             Alert.alert('Success', "Ticket validated successfully.", [
                 { text: 'Ok', onPress: () => setScanningEnabled(true) },

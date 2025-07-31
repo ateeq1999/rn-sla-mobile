@@ -14,6 +14,12 @@ const Home = () => {
                         <Button onPress={() => router.push('/(authed)/profile')}>
                             <ButtonText>Profile Page</ButtonText>
                         </Button>
+                        <Button className='bg-green-400 text-white' onPress={() => router.push('/(authed)/wheel')} size='xl'>
+                            <ButtonText>Lucky Wheel Page</ButtonText>
+                        </Button>
+                        <Button onPress={() => router.push('/(authed)/partners')}>
+                            <ButtonText>Partners Page</ButtonText>
+                        </Button>
                         <Button onPress={() => router.push('/(authed)/scan')}>
                             <ButtonText>Scan Page</ButtonText>
                         </Button>

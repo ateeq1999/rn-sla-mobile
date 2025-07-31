@@ -9,7 +9,7 @@ export interface ModelAttributes {
 export interface User extends ModelAttributes {
     name: string;
     email: string;
-    password: string;
+    password?: string;
 }
 
 export interface Partner extends User {

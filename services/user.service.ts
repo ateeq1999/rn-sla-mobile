@@ -1,6 +1,5 @@
-import { RegisterUserInput, LoginUserInput, Partner } from "@/types/user";
+import { RegisterUserInput, LoginUserInput, Partner, ListApiResponse, SingleApiResponse } from "@/types/user";
 import { Api } from "./api";
-import { ListApiResponse, SingleApiResponse } from "@/types/shared";
 
 async function index(data: LoginUserInput): Promise<ListApiResponse<Partner>> {
     return await Api.get("/partners");

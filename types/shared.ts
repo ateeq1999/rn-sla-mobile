@@ -1,3 +1,5 @@
+import { Partner } from "."
+
 export interface Token {
     type: string
     name: string | null
@@ -7,7 +9,7 @@ export interface Token {
     expiresAt: number | null
 }
 
-export interface Meta {
+export interface PaginationMeta {
     total: number,
     perPage: number,
     currentPage: number,
@@ -29,7 +31,7 @@ export interface MeData<T> {
 }
 
 export interface ApiData<T> {
-    meta: Meta
+    meta: PaginationMeta
     data: Array<T>
 }
 
@@ -39,5 +41,14 @@ export interface RegisterApiResponse<T> extends BaseApiResponse {
 
 export interface BaseApiResponse {
     message: string;
+    code: number;
+}
+
+export interface PartnersResponse {
+    message: string;
+    data: {
+        meta: PaginationMeta;
+        data: Array<Partner>;
+    };
     code: number;
 }
