@@ -73,8 +73,9 @@ export default function LoginForm() {
             setLoading(true)
 
             const res = await authService.partnerLogin({ email: data.email, password: data.password })
+            console.log("auth res: ", res)
 
-            if (res.data) {
+            if (res.data !== undefined) {
                 console.log("auth success: ", res.data)
                 await AsyncStorage.setItem('token', res.data.token.token);
                 await AsyncStorage.setItem('user', JSON.stringify(res.data.partner));

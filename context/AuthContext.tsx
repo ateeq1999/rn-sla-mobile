@@ -2,7 +2,8 @@ import { userService } from '@/services/user.service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { router } from 'expo-router';
-import {LoginUserInput, RegisterUserInput, User} from '@/types/user';
+import { LoginUserInput, RegisterUserInput, User } from '@/types/user';
+import { authService } from '@/services/auth.service';
 
 interface AuthContextProps {
     isLoggedIn: boolean;
@@ -45,7 +46,7 @@ export function AuthenticationProvider({ children }: React.PropsWithChildren) {
         try {
             setIsLoadingAuth(true);
 
-            const response = await userService.login(data);
+            const response = await authService.login(data);
 
             if (response) {
                 setIsLoggedIn(true);
@@ -66,7 +67,7 @@ export function AuthenticationProvider({ children }: React.PropsWithChildren) {
         try {
             setIsLoadingAuth(true);
 
-            const response = await userService.register(data);
+            const response = await authService.register(data);
 
             if (response) {
                 setIsLoggedIn(true);
@@ -91,15 +92,15 @@ export function AuthenticationProvider({ children }: React.PropsWithChildren) {
 
     return (
         <AuthContext.Provider
-            value={ {
+            value={{
                 logout,
                 isLoggedIn,
                 isLoadingAuth,
                 user,
                 login,
                 register,
-            } }>
-            { children }
+            }}>
+            {children}
         </AuthContext.Provider>
     );
 }
