@@ -76,7 +76,7 @@ const ProfilePage = () => {
                         id={user.id}
                     />
 
-                    <AboutCard description={user.description} />
+                    <AboutCard description={null} />
 
                     <AccountInfoCard
                         createdAt={user.createdAt}

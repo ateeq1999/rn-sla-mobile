@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Partner } from '@/types/user';
+import { User } from '@/types/user';
 import { Token } from '@/types/shared';
 
 interface State {
-  user: Partner | null
+  user: User | null
   token: Token | null
 }
 

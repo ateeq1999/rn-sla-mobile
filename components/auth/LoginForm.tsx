@@ -29,7 +29,7 @@ import {
     Icon,
 } from "@/components/ui/icon";
 import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Linking, Platform, ScrollView, TouchableWithoutFeedback } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -72,17 +72,17 @@ export default function LoginForm() {
         try {
             setLoading(true)
 
-            const res = await authService.partnerLogin({ email: data.email, password: data.password })
+            const res = await authService.login({ email: data.email, password: data.password })
             console.log("auth res: ", res)
 
             if (res.data !== undefined) {
                 console.log("auth success: ", res.data)
                 await AsyncStorage.setItem('token', res.data.token.token);
-                await AsyncStorage.setItem('user', JSON.stringify(res.data.partner));
+                await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
 
                 // set auth state store
                 setToken(res.data.token)
-                setUser(res.data.partner)
+                setUser(res.data.user)
 
                 // redirect to home screen
                 router.push('(authed)/home')
@@ -136,6 +136,10 @@ export default function LoginForm() {
         Keyboard.dismiss();
         handleSubmit(onSubmit)();
     };
+
+    const signupWithGoogle = async () => {
+        console.log('started google auth ')
+    }
 
     return (
         <KeyboardAvoidingView
@@ -292,7 +296,7 @@ export default function LoginForm() {
                                     variant="outline"
                                     action="secondary"
                                     className="w-full gap-1"
-                                    onPress={() => { }}
+                                    onPress={signupWithGoogle}
                                     size="xl"
                                 >
                                     <ButtonText className="font-medium">

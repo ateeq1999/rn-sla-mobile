@@ -32,3 +32,20 @@ export async function signup(email: string, password: string) {
   }
   return data;
 }
+
+export async function google() {
+  const res = await fetch(`${API_URL}/auth/google`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw Error('Failed to login');
+  }
+
+  return data;
+}

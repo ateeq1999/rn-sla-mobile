@@ -21,6 +21,11 @@ export interface PaginationMeta {
     previousPageUrl: string | null,
 }
 
+export interface UserAuthData<T> {
+    token: Token
+    user: T
+}
+
 export interface AuthData<T> {
     token: Token
     partner: T

@@ -2,6 +2,8 @@
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { Api } from '@/services/api';
+import { authService } from '@/services/auth.service';
 import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -35,6 +37,7 @@ export default function ScanTicketScreen() {
             setScanningEnabled(false);
 
             console.log(data)
+            const res = await authService.signPartner(data)
 
             // const [ticket, owner] = data.split(",");
             // const ticketId = parseInt(ticket.split(":")[1]);

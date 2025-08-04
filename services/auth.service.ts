@@ -1,5 +1,9 @@
-import { RegisterUserInput, LoginUserInput, Partner, User, MeApiResponse, RegisterApiResponse, BaseApiResponse, LoginApiResponse } from "@/types";
+import { RegisterUserInput, LoginUserInput, Partner, User, MeApiResponse, RegisterApiResponse, BaseApiResponse, LoginApiResponse, SignPartnerApiResponse } from "@/types";
 import { Api } from "./api";
+
+async function signUpWithGoogle(): Promise<LoginApiResponse<Partner>> {
+    return await Api.get("/auth/google");
+}
 
 async function partnerLogin(data: LoginUserInput): Promise<LoginApiResponse<Partner>> {
     return await Api.post("/auth/partners/login", data);
@@ -13,9 +17,12 @@ async function partnerLogout(): Promise<BaseApiResponse> {
     return Api.post("/auth/partners/logout");
 }
 
-
 async function partnerMe(): Promise<MeApiResponse<Partner>> {
     return Api.post("/auth/partners/me");
+}
+
+async function signPartner(id: string): Promise<SignPartnerApiResponse<User>> {
+    return Api.post("/auth/users/sign-partner", { partner_id: id });
 }
 
 async function login(data: LoginUserInput): Promise<LoginApiResponse<User>> {
@@ -35,10 +42,12 @@ async function me(): Promise<BaseApiResponse> {
 }
 
 const authService = {
+    signUpWithGoogle,
     partnerLogin,
     partnerRegister,
     partnerLogout,
     partnerMe,
+    signPartner,
     login,
     register,
     logout,

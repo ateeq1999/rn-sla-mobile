@@ -1,4 +1,4 @@
-import { ApiData, AuthData, BaseApiResponse, MeData } from "./shared";
+import { ApiData, AuthData, BaseApiResponse, MeData, UserAuthData } from "./shared";
 
 export interface ModelAttributes {
     id: string
@@ -33,7 +33,7 @@ export interface RegisterUserInput {
 }
 
 export interface LoginApiResponse<T> extends BaseApiResponse {
-    data: AuthData<T>;
+    data: UserAuthData<T>;
 }
 
 export interface MeApiResponse<T> extends BaseApiResponse {
@@ -46,5 +46,9 @@ export interface ListApiResponse<T> extends BaseApiResponse {
 
 export interface SingleApiResponse<T> extends BaseApiResponse {
     data: ApiData<T>;
+}
+
+export interface SignPartnerApiResponse<T> extends BaseApiResponse {
+    data: T;
 }
 
